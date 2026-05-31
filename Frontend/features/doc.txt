@@ -1,0 +1,64 @@
+├── features/
+│   │
+│   ├── auth/
+│   │   ├── pages/
+│   │   │   ├── LoginPage.tsx
+│   │   │   └── RegisterPage.tsx
+│   │   │
+│   │   ├── hooks/
+│   │   └── api/
+│   │
+│   ├── posts/
+│   │   ├── pages/
+│   │   │   ├── HomePage.tsx
+│   │   │   ├── PostDetailPage.tsx
+│   │   │   ├── CreatePostPage.tsx
+│   │   │   └── EditPostPage.tsx
+│   │   │
+│   │   ├── components/
+│   │   │   ├── PostEditor.tsx
+│   │   │   ├── PostCard.tsx
+│   │   │   └── PostForm.tsx
+│   │   │
+│   │   ├── api/
+│   │   └── types/
+│   │
+│   ├── comments/
+│   │   ├── components/
+│   │   ├── api/
+│   │   └── types/
+│   │
+│   ├── categories/
+│   │   ├── api/
+│   │   └── types/
+│   │
+│   └── profile/
+│       ├── pages/
+│       ├── api/
+│       └── types/
+│
+├── services/
+│   ├── axios.ts
+│   └── apiClient.ts
+│
+├── hooks/
+│   ├── useDebounce.ts
+│   └── useAuth.ts
+│
+├── utils/
+│   ├── formatDate.ts
+│   ├── slugify.ts
+│   └── validation.ts
+│
+├── routes/
+│   └── AppRouter.tsx
+│
+├── layouts/
+│   ├── MainLayout.tsx
+│   └── AuthLayout.tsx
+│
+├── types/
+│   └── index.ts
+│
+├── App.tsx
+└── main.tsx
