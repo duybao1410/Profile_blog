@@ -1,0 +1,3 @@
+packages:
+  - 'frontend'   # Thư mục React frontend
+  - 'blog'       # Thư mục Strapi CMS 

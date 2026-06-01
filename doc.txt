@@ -1,0 +1,6 @@
+
+// bước 1: tạo file pnpm-workspace.yaml ở root với nội dung sau:
+// bước 2: chỉnh sửa package.json ở root
+// bước 3: chỉnh sửa package.json ở frontend và backend để có thể chạy độc lập nếu cần
+// bước 4: chạy lệnh pnpm install ở root để cài đặt tất cả dependencies
+// bước 5: chạy lệnh pnpm dev để chạy cả frontend và backend cùng lúc
