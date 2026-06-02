@@ -1,3 +1,9 @@
 packages:
-  - 'frontend'   # Thư mục React frontend
-  - 'blog'       # Thư mục Strapi CMS 
+  - 'frontend' # Thư mục React frontend
+  - 'blog' # Thư mục Strapi CMS 
+allowBuilds:
+  '@swc/core': true
+  better-sqlite3: true
+  core-js-pure: true
+  esbuild: true
+  sharp: true
