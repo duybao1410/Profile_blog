@@ -8,6 +8,7 @@ import RegisterPage from '../features/auth/pages/RegisterPage';
 import PostDetailPage from '../features/posts/pages/PostDetailPage';
 import CreatePostPage from '../features/posts/pages/CreatePostPage';
 import EditPostPage from '../features/posts/pages/EditPostPage';
+import ProfilePage from '../features/profile/pages/ProfilePage';
 
 export const AppRouter = () => {
   return (
@@ -19,6 +20,7 @@ export const AppRouter = () => {
         <Route path="/posts/:id" element={<PostDetailPage />} />
         <Route path="/posts/create" element={<CreatePostPage />} />
         <Route path="/posts/:id/edit" element={<EditPostPage />} />
+        <Route path="/about" element={<ProfilePage />} />
       </Routes>
     </BrowserRouter>
   );

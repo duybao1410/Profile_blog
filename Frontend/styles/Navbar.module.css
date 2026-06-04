@@ -1,110 +1,31 @@
-.navbar {
-  background-color: var(--color-primary);
-  padding: 12px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--color-border);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
 
-.navbarContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
 
-.logo {
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
-}
-
-.logo:hover {
-  opacity: 0.8;
-}
-
-.navMenu {
-  display: flex;
-  list-style: none;
-  gap: 30px;
-  margin: 0;
-  padding: 0;
-}
-
-.navItem {
-  margin: 0;
-}
-
-.navLink {
-  color: white;
-  text-decoration: none;
+/* Navbar Custom Styling */
+.navbar .nav-link {
+  color: #00695c !important;
   font-weight: 500;
-  font-size: 14px;
   transition: all 0.3s ease;
-  padding: 8px 12px;
+  margin: 0 0.5rem;
   border-radius: 4px;
 }
 
-.navLink:hover {
-  background-color: var(--color-primary-700);
-  color: var(--color-white);
+.navbar .nav-link:hover {
+  color: #00897b !important;
+  background-color: #b3e5fc;
 }
 
-.navLink.active {
-  background-color: var(--color-secondary-600);
-  color: white;
+.navbar .nav-link.active {
+  color: #00695c !important;
+  background-color: #80deea;
+  font-weight: 600;
 }
 
-.navRight {
-  display: flex;
-  gap: 15px;
-  align-items: center;
+.navbar-toggler {
+  border-color: #00695c;
 }
 
-.navBtn {
-  background-color: var(--color-white);
-  color: var(--color-primary);
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.3s ease;
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%2300695c' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
-.navBtn:hover {
-  background-color: var(--color-neutral-100);
-  transform: translateY(-2px);
-}
 
-.navBtn.logout {
-  background-color: var(--color-error);
-  color: white;
-}
-
-.navBtn.logout:hover {
-  background-color: var(--color-error-700);
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-  .navMenu {
-    gap: 15px;
-  }
-
-  .navRight {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .navBtn {
-    width: 100%;
-  }
-}
