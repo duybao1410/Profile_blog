@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev:frontend": "pnpm --filter Frontend dev",
+    "dev:frontend": "pnpm --filter frontend dev",
     "dev:backend": "pnpm --filter blog dev",
     "dev": "concurrently \"pnpm dev:frontend\" \"pnpm dev:backend\"",
-    "build:frontend": "pnpm --filter Frontend build",
+    "build:frontend": "pnpm --filter frontend build",
     "build:backend": "pnpm --filter blog build"
   },
   "devDependencies": {

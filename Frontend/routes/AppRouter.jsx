@@ -12,8 +12,8 @@ import ProfilePage from '../features/profile/pages/ProfilePage';
 
 export const AppRouter = () => {
   return (
-    <BrowserRouter>
-      <Routes>
+<BrowserRouter>   
+   <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
