@@ -470,7 +470,7 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiCertificateCertificate extends Struct.SingleTypeSchema {
+export interface ApiCertificateCertificate extends Struct.CollectionTypeSchema {
   collectionName: 'certificates';
   info: {
     displayName: 'Certificate';
@@ -486,6 +486,7 @@ export interface ApiCertificateCertificate extends Struct.SingleTypeSchema {
       Schema.Attribute.Private;
     dateAchieved: Schema.Attribute.Date;
     description: Schema.Attribute.Text;
+    link: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -493,6 +494,9 @@ export interface ApiCertificateCertificate extends Struct.SingleTypeSchema {
     > &
       Schema.Attribute.Private;
     organization: Schema.Attribute.String;
+    organization_logo: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
     photo: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String;
@@ -535,7 +539,7 @@ export interface ApiCommentComment extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiEducationEducation extends Struct.SingleTypeSchema {
+export interface ApiEducationEducation extends Struct.CollectionTypeSchema {
   collectionName: 'educations';
   info: {
     displayName: 'Education';
@@ -559,6 +563,7 @@ export interface ApiEducationEducation extends Struct.SingleTypeSchema {
       'api::education.education'
     > &
       Schema.Attribute.Private;
+    logo: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     publishedAt: Schema.Attribute.DateTime;
     startDate: Schema.Attribute.Date;
     updatedAt: Schema.Attribute.DateTime;
@@ -567,7 +572,7 @@ export interface ApiEducationEducation extends Struct.SingleTypeSchema {
   };
 }
 
-export interface ApiExperienceExperience extends Struct.SingleTypeSchema {
+export interface ApiExperienceExperience extends Struct.CollectionTypeSchema {
   collectionName: 'experiences';
   info: {
     displayName: 'Experience';
@@ -685,7 +690,7 @@ export interface ApiProfileProfile extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiProjectProject extends Struct.SingleTypeSchema {
+export interface ApiProjectProject extends Struct.CollectionTypeSchema {
   collectionName: 'projects';
   info: {
     displayName: 'Project';

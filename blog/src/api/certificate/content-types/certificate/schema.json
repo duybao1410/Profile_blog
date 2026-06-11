@@ -1,5 +1,5 @@
 {
-  "kind": "singleType",
+  "kind": "collectionType",
   "collectionName": "certificates",
   "info": {
     "singularName": "certificate",
@@ -32,6 +32,19 @@
         "videos",
         "audios"
       ]
+    },
+    "organization_logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "link": {
+      "type": "string"
     }
   }
 }

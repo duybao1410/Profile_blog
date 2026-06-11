@@ -1,31 +1,62 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './AboutMe.module.css';
-
+import EducationCard from './EducationCard';
+import ExperienceCard from './ExperienceCard';
+import CertCard from './CertCard';
 const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337';
 
+// ── Helper: format date "10/2023" → "Oct 2023" ──
+const formatDate = (dateStr) => {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+};
+
+// ────────────────────────────────────────────
+// Main component: AboutMe
+// ────────────────────────────────────────────
 const AboutMe = () => {
   const sectionRef = useRef(null);
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  // Fetch profile từ Strapi
+  const [profile, setProfile]       = useState(null);
+  const [educations, setEducations] = useState([]);
+  const [loading, setLoading]       = useState(true);
+  const [error, setError]           = useState(null);
+  const [experiences, setExperiences] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [certifications, setCertifications] = useState([]);
+
+  // Fetch profile + educations
   useEffect(() => {
-    const fetchProfile = async () => {
+    const fetchAll = async () => {
       try {
-        const res = await fetch(
-          `${STRAPI_URL}/api/profiles?populate=*`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              // Nếu API cần token: Authorization: `Bearer ${token}`
-            },
-          }
-        );
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        const json = await res.json();
-        const data = json?.data?.[0];
-        setProfile(data);
+        const [profileRes, eduRes, expRes, projRes, certRes] = await Promise.all([
+          fetch(`${STRAPI_URL}/api/profiles?populate=avatar`),
+          fetch(`${STRAPI_URL}/api/educations?populate=logo&sort=startDate:desc`),
+          fetch(`${STRAPI_URL}/api/experiences?populate=companyLogo&sort=startDate:desc`),
+          fetch(`${STRAPI_URL}/api/projects?populate=thumbnail&sort=startDate:desc`),
+          fetch(`${STRAPI_URL}/api/certificates?populate=organization_logo`),
+        ]);
+
+        if (!profileRes.ok) throw new Error(`Profile error: ${profileRes.status}`);
+        if (!eduRes.ok)     throw new Error(`Education error: ${eduRes.status}`);
+        if (!expRes.ok)     throw new Error(`Experience error: ${expRes.status}`);
+        if (!projRes.ok)     throw new Error(`Project error: ${projRes.status}`);
+        if (!certRes.ok)     throw new Error(`Certification error: ${certRes.status}`);
+
+        const [profileJson, eduJson, expJson, projJson, certJson] = await Promise.all([
+          profileRes.json(),
+          eduRes.json(),
+          expRes.json(),
+          projRes.json(), 
+          certRes.json(),
+        ]);
+
+        setProfile(profileJson?.data?.[0] ?? null);
+        setEducations(eduJson?.data ?? []);
+        setExperiences(expJson?.data ?? []);
+        setProjects(projJson?.data ?? []);
+        setCertifications(certJson?.data ?? []);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -33,33 +64,29 @@ const AboutMe = () => {
       }
     };
 
-    fetchProfile();
+    fetchAll();
   }, []);
 
   // Fade-in observer
   useEffect(() => {
     if (loading) return;
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add(styles.visible);
-          }
-        });
-      },
+      (entries) => entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add(styles.visible);
+      }),
       { threshold: 0.1 }
     );
-    const elements = sectionRef.current?.querySelectorAll(`.${styles.fadeIn}`);
-    elements?.forEach((el) => observer.observe(el));
+    sectionRef.current
+      ?.querySelectorAll(`.${styles.fadeIn}`)
+      .forEach(el => observer.observe(el));
     return () => observer.disconnect();
   }, [loading]);
 
-  // Helpers
   const avatarUrl = profile?.avatar?.url
     ? `${STRAPI_URL}${profile.avatar.url}`
     : null;
 
-  // ── Loading skeleton ──
+  // ── Loading ──
   if (loading) {
     return (
       <section className={styles.aboutSection}>
@@ -77,47 +104,41 @@ const AboutMe = () => {
     );
   }
 
-  // ── Error state ──
-  if (error || !profile) {
+  // ── Error ──
+  if (error) {
     return (
       <section className={styles.aboutSection}>
         <div className="container text-center">
-          <p className="text-muted">Failed to load profile data.</p>
+          <p className="text-danger">Error: {error}</p>
         </div>
       </section>
     );
   }
 
   const {
-    full_name,
-    headline,
-    bio,
-    about_me,
-    location,
-    phone,
-    github_url,
-    linkedin_url,
-    facebook_url,
-    website_url,
-  } = profile;
+    full_name, headline, bio,
+    location, phone,
+    github_url, linkedin_url, facebook_url, website_url,
+  } = profile || {};
 
   return (
     <section className={styles.aboutSection} ref={sectionRef} id="about">
       <div className="container">
 
-        {/* ── Hero header (tên + avatar) ── */}
-        <div className={`row justify-content-center align-items-center mb-5 ${styles.fadeIn}`}>
+        {/* ── 1. Hero: Tên bên trái, Ảnh bên phải (Đồng bộ tuyệt đối) ── */}
+        <div className={`row justify-content-center align-items-center mb-5 mx-auto ${styles.fadeIn}`} style={{ maxWidth: '960px' }}>
           
-          {/* Phần thông tin chữ */}
-          <div className="col-12 col-md-6 text-center text-md-start">
+          {/* Khối Chữ: Căn trái trên PC, căn giữa trên Mobile để đảm bảo tính đối xứng */}
+          <div className="col-12 col-md-7 text-center text-md-start pe-md-4">
             {full_name && (
               <h1 className={styles.heroName}>
-                Hi, I'm {full_name} 
+                Hi, I'm {full_name}
               </h1>
             )}
             {headline && <p className={styles.heroHeadline}>{headline}</p>}
             
-            <div className={`${styles.contactRow} d-flex flex-wrap justify-content-center justify-content-md-start gap-3 mt-2`}>
+            {/* Hàng thông tin liên hệ */}
+            <div className="d-flex flex-wrap justify-content-center justify-content-md-start gap-3 mt-2">
               {location && <span className={styles.contactItem}>📍 {location}</span>}
               {phone && (
                 <a href={`tel:${phone}`} className={styles.contactItem}>
@@ -126,7 +147,8 @@ const AboutMe = () => {
               )}
             </div>
             
-            <div className={`${styles.socialRow} d-flex flex-wrap justify-content-center justify-content-md-start gap-2 mt-3`}>
+            {/* Hàng mạng xã hội */}
+            <div className="d-flex flex-wrap justify-content-center justify-content-md-start gap-2 mt-3">
               {github_url && (
                 <a href={github_url} target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
                   GitHub
@@ -150,9 +172,9 @@ const AboutMe = () => {
             </div>
           </div>
 
-          {/* Phần Avatar */}
+          {/* Khối Ảnh: Chiếm 5 phần, đẩy sang phải mượt mà bằng khoảng đệm ps-md-4 */}
           {avatarUrl && (
-            <div className="col-12 col-md-3 text-center mt-4 mt-md-0">
+            <div className="col-12 col-md-5 text-center text-md-end mt-4 mt-md-0 ps-md-4">
               <img
                 src={avatarUrl}
                 alt={full_name || 'Avatar'}
@@ -162,36 +184,106 @@ const AboutMe = () => {
           )}
         </div>
 
-        {/* ── CHỈNH SỬA: About Me Title (Căn toàn bộ tiêu đề ra giữa) ── */}
-        <div className="row justify-content-center text-center">
-          <div className="col-12 col-lg-8">
+        {/* ── 2. About Me (Độ rộng chuẩn col-lg-8) ── */}
+        <div className="row justify-content-center text-center mb-5">
+          <div className="col-12 col-md-12 col-lg-8">
             <div className={`${styles.fadeIn} mb-3`}>
-              {/* Sửa lại lỗi cú pháp thuộc tính "text-center" cũ của bạn */}
-              <span className={`${styles.sectionLabel} d-inline-block`}>About Me</span>
+              <span className={styles.sectionLabel}>About Me</span>
             </div>
             <h2 className={`${styles.fadeIn} ${styles.heading} mb-3`}>Who I Am</h2>
-            
-            {/* Bio: Thêm text-start để nội dung bio canh lề trái trong khối căn giữa */}
             {bio && (
-              <p className={`${styles.fadeIn} ${styles.subtitle} text-start mb-4`}>{bio}</p>
+              <p className={`${styles.fadeIn} ${styles.subtitle} mb-4`}>{bio}</p>
             )}
-            <hr className={`${styles.fadeIn} ${styles.divider} mb-4`} />
+            <hr className={`${styles.fadeIn} ${styles.divider} mb-0`} />
           </div>
         </div>
 
-        {/* ── CHỈNH SỬA: About Me Content (Khối nằm giữa, chữ canh lề trái theo đoạn) ── */}
-        {about_me && (
-          <div className="row justify-content-center">
-            {/* Thêm class text-start (hoặc text-justify nếu muốn thẳng đều 2 bên) */}
-            <div className={`col-12 col-lg-8 text-start ${styles.fadeIn} ${styles.bodyText}`}>
-              {about_me.split('\n').filter(Boolean).map((paragraph, i) => (
-                <p key={i} className="mb-3">{paragraph}</p>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* ── 3. Education (Độ rộng chuẩn col-lg-8) ── */}
+        <div className="row justify-content-center">
+          <div className="col-12 col-md-12 col-lg-8">
 
+            {/* Section header */}
+            <div className={`${styles.fadeIn} text-center mb-4`}>
+              <span className={styles.sectionLabel}>Education</span>
+            </div>
+            <h2 className={`${styles.fadeIn} ${styles.heading} text-center mb-4`}>
+              Academic Background
+            </h2>
+            
+            {/* Education cards */}
+            {educations.length === 0 ? (
+              <p className={`${styles.fadeIn} text-muted text-center`}>No education records found.</p>
+            ) : (
+              <div className="d-flex flex-column gap-3">
+                {educations.map((edu) => (
+                  <div key={edu.id} className={styles.fadeIn}>
+                    <EducationCard edu={edu} />
+                  </div>
+                ))}
+              </div>
+            )}
+
+          </div>
+        </div>
+      
+      {/* ── 4. Experience (Độ rộng chuẩn col-lg-8) ── */}
+        <div className="row justify-content-center mt-5">
+          <div className="col-12 col-md-12 col-lg-8">
+
+            {/* Section header */}
+            <div className={`${styles.fadeIn} text-center mb-4`}>
+              <span className={styles.sectionLabel}>Experience</span>
+            </div>
+            <h2 className={`${styles.fadeIn} ${styles.heading} text-center mb-4`}>
+              My experience journey 
+            </h2>
+            
+            {/* Experience cards */}
+            {experiences.length === 0 ? (
+              <p className={`${styles.fadeIn} text-muted text-center`}>No experience records found.</p>
+            ) : (
+              <div className="d-flex flex-column gap-3">
+                {experiences.map((exp) => (
+                  <div key={exp.id} className={styles.fadeIn}>
+                    <ExperienceCard exp={exp} />
+                  </div>
+                ))}
+              </div>
+            )}
+
+          </div>
+        </div>
+       
       </div>
+
+       {/* ── 4. Certifications (Độ rộng chuẩn col-lg-8) ── */}
+        <div className="row justify-content-center mt-5">
+          <div className="col-12 col-md-12 col-lg-8">
+
+            {/* Section header */}
+            <div className={`${styles.fadeIn} text-center mb-4`}>
+              <span className={styles.sectionLabel}>Certifications</span>
+            </div>
+            <h2 className={`${styles.fadeIn} ${styles.heading} text-center mb-4`}>
+              My Certifications
+            </h2>
+            
+            {/* Certification cards */}
+            {certifications.length === 0 ? (
+              <p className={`${styles.fadeIn} text-muted text-center`}>No certification records found.</p>
+            ) : (
+              <div className="d-flex flex-column gap-3">
+                {certifications.map((cert) => (
+                  <div key={cert.id} className={styles.fadeIn}>
+                    <CertCard cert={cert} />
+                  </div>
+                ))}
+              </div>
+            )}
+
+          </div>
+        </div>
+       
     </section>
   );
 };
