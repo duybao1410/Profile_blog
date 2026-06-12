@@ -48,6 +48,9 @@
     },
     "endDate": {
       "type": "date"
+    },
+    "project_technologies": {
+      "type": "json"
     }
   }
 }

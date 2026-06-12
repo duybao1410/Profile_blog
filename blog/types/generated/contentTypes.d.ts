@@ -714,6 +714,7 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     longDescription: Schema.Attribute.Text;
+    project_technologies: Schema.Attribute.JSON;
     publishedAt: Schema.Attribute.DateTime;
     shortDescription: Schema.Attribute.Text;
     slug: Schema.Attribute.UID<'title'>;

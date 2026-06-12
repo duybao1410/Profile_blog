@@ -3,6 +3,8 @@ import styles from './AboutMe.module.css';
 import EducationCard from './EducationCard';
 import ExperienceCard from './ExperienceCard';
 import CertCard from './CertCard';
+import ProjectCard from './ProjectCard';
+
 const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337';
 
 // ── Helper: format date "10/2023" → "Oct 2023" ──
@@ -18,15 +20,15 @@ const formatDate = (dateStr) => {
 const AboutMe = () => {
   const sectionRef = useRef(null);
 
-  const [profile, setProfile]       = useState(null);
+  const [profile, setProfile] = useState(null);
   const [educations, setEducations] = useState([]);
-  const [loading, setLoading]       = useState(true);
-  const [error, setError]           = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [experiences, setExperiences] = useState([]);
   const [projects, setProjects] = useState([]);
   const [certifications, setCertifications] = useState([]);
 
-  // Fetch profile + educations
+  // Fetch data từ Strapi
   useEffect(() => {
     const fetchAll = async () => {
       try {
@@ -41,14 +43,14 @@ const AboutMe = () => {
         if (!profileRes.ok) throw new Error(`Profile error: ${profileRes.status}`);
         if (!eduRes.ok)     throw new Error(`Education error: ${eduRes.status}`);
         if (!expRes.ok)     throw new Error(`Experience error: ${expRes.status}`);
-        if (!projRes.ok)     throw new Error(`Project error: ${projRes.status}`);
-        if (!certRes.ok)     throw new Error(`Certification error: ${certRes.status}`);
+        if (!projRes.ok)    throw new Error(`Project error: ${projRes.status}`);
+        if (!certRes.ok)    throw new Error(`Certification error: ${certRes.status}`);
 
         const [profileJson, eduJson, expJson, projJson, certJson] = await Promise.all([
           profileRes.json(),
           eduRes.json(),
           expRes.json(),
-          projRes.json(), 
+          projRes.json(),
           certRes.json(),
         ]);
 
@@ -125,10 +127,10 @@ const AboutMe = () => {
     <section className={styles.aboutSection} ref={sectionRef} id="about">
       <div className="container">
 
-        {/* ── 1. Hero: Tên bên trái, Ảnh bên phải (Đồng bộ tuyệt đối) ── */}
+        {/* ── 1. Hero: Tên bên trái, Ảnh bên phải ── */}
         <div className={`row justify-content-center align-items-center mb-5 mx-auto ${styles.fadeIn}`} style={{ maxWidth: '960px' }}>
           
-          {/* Khối Chữ: Căn trái trên PC, căn giữa trên Mobile để đảm bảo tính đối xứng */}
+          {/* Khối Chữ */}
           <div className="col-12 col-md-7 text-center text-md-start pe-md-4">
             {full_name && (
               <h1 className={styles.heroName}>
@@ -172,7 +174,7 @@ const AboutMe = () => {
             </div>
           </div>
 
-          {/* Khối Ảnh: Chiếm 5 phần, đẩy sang phải mượt mà bằng khoảng đệm ps-md-4 */}
+          {/* Khối Ảnh */}
           {avatarUrl && (
             <div className="col-12 col-md-5 text-center text-md-end mt-4 mt-md-0 ps-md-4">
               <img
@@ -184,7 +186,7 @@ const AboutMe = () => {
           )}
         </div>
 
-        {/* ── 2. About Me (Độ rộng chuẩn col-lg-8) ── */}
+        {/* ── 2. About Me ── */}
         <div className="row justify-content-center text-center mb-5">
           <div className="col-12 col-md-12 col-lg-8">
             <div className={`${styles.fadeIn} mb-3`}>
@@ -198,11 +200,9 @@ const AboutMe = () => {
           </div>
         </div>
 
-        {/* ── 3. Education (Độ rộng chuẩn col-lg-8) ── */}
+        {/* ── 3. Education ── */}
         <div className="row justify-content-center">
           <div className="col-12 col-md-12 col-lg-8">
-
-            {/* Section header */}
             <div className={`${styles.fadeIn} text-center mb-4`}>
               <span className={styles.sectionLabel}>Education</span>
             </div>
@@ -210,7 +210,6 @@ const AboutMe = () => {
               Academic Background
             </h2>
             
-            {/* Education cards */}
             {educations.length === 0 ? (
               <p className={`${styles.fadeIn} text-muted text-center`}>No education records found.</p>
             ) : (
@@ -222,15 +221,12 @@ const AboutMe = () => {
                 ))}
               </div>
             )}
-
           </div>
         </div>
       
-      {/* ── 4. Experience (Độ rộng chuẩn col-lg-8) ── */}
+        {/* ── 4. Experience ── */}
         <div className="row justify-content-center mt-5">
           <div className="col-12 col-md-12 col-lg-8">
-
-            {/* Section header */}
             <div className={`${styles.fadeIn} text-center mb-4`}>
               <span className={styles.sectionLabel}>Experience</span>
             </div>
@@ -238,7 +234,6 @@ const AboutMe = () => {
               My experience journey 
             </h2>
             
-            {/* Experience cards */}
             {experiences.length === 0 ? (
               <p className={`${styles.fadeIn} text-muted text-center`}>No experience records found.</p>
             ) : (
@@ -250,17 +245,12 @@ const AboutMe = () => {
                 ))}
               </div>
             )}
-
           </div>
         </div>
-       
-      </div>
-
-       {/* ── 4. Certifications (Độ rộng chuẩn col-lg-8) ── */}
+         
+        {/* ── 5. Certifications ── */}
         <div className="row justify-content-center mt-5">
           <div className="col-12 col-md-12 col-lg-8">
-
-            {/* Section header */}
             <div className={`${styles.fadeIn} text-center mb-4`}>
               <span className={styles.sectionLabel}>Certifications</span>
             </div>
@@ -268,7 +258,6 @@ const AboutMe = () => {
               My Certifications
             </h2>
             
-            {/* Certification cards */}
             {certifications.length === 0 ? (
               <p className={`${styles.fadeIn} text-muted text-center`}>No certification records found.</p>
             ) : (
@@ -280,10 +269,34 @@ const AboutMe = () => {
                 ))}
               </div>
             )}
-
           </div>
         </div>
-       
+
+        {/* ── 6. Projects ── */}
+        <div className="row justify-content-center mt-5">
+          <div className="col-12 col-md-12 col-lg-8">
+            <div className={`${styles.fadeIn} text-center mb-4`}>
+              <span className={styles.sectionLabel}>Projects</span>
+            </div>
+            <h2 className={`${styles.fadeIn} ${styles.heading} text-center mb-4`}>
+              My Projects
+            </h2>
+            
+            {projects.length === 0 ? (
+              <p className={`${styles.fadeIn} text-muted text-center`}>No project records found.</p>
+            ) : (
+              <div className="d-flex flex-column gap-3">
+                {projects.map((proj) => (
+                  <div key={proj.id} className={styles.fadeIn}>
+                    <ProjectCard project={proj} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+      </div> 
     </section>
   );
 };
