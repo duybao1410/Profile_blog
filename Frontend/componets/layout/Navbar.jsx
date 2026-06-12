@@ -77,19 +77,6 @@ export const Navbar = () => {
               </NavLink>
             </li>
 
-            <li className="nav-item">
-              <NavLink
-                to="/contact"
-                style={({ isActive }) => ({
-                  color: isActive ? "#111111" : "#666666",
-                  fontWeight: isActive ? "600" : "400",
-                  transition: "all 0.2s ease"
-                })}
-                className="nav-link"
-              >
-                Contact
-              </NavLink>
-            </li>
           </ul>
 
           {/* Auth Buttons - Thiết kế nút tinh tế, đồng bộ Portfolio */}
