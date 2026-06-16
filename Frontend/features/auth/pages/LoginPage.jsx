@@ -1,10 +1,13 @@
 import React from 'react';
+import styles from './auth.module.css';
+import { Navbar } from '../../../componets/layout/Navbar';
+import LoginCard from '../card/Logincard';  
 
-export const LoginPage = () => {
+const LoginPage = () => {
   return (
-    <div className="login-page">
-      <h1>Login</h1>
-      {/* Login form content */}
+    <div>
+      <Navbar />
+      <LoginCard />
     </div>
   );
 };

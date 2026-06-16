@@ -1,0 +1,71 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Blog & PostCard CSS Module
+   Style: Black & white minimalist — matches portfolio design
+   Bootstrap handles: layout, grid, spacing, basic card shapes
+   CSS Module handles: typography overrides, animations, custom hovers
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ─── Blog Page Main Elements ─── */
+.sectionLabel {
+  display: inline-block;
+  background-color: #111;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* ─── PostCard Custom Style ─── */
+.customCard {
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.customCard:hover {
+  border-color: #ccc !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+.thumbWrapper img {
+  transition: transform 0.4s ease;
+}
+
+.customCard:hover .thumbWrapper img {
+  transform: scale(1.03);
+}
+
+.titleHover {
+  transition: color 0.2s ease;
+}
+
+.titleHover:hover {
+  color: #555 !important;
+}
+
+/* Nút bấm Đọc bài viết (Minimalist Button) */
+.minimalBtn {
+  color: #111;
+  border: 1px solid #e5e5e5;
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.minimalBtn:hover {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Skeleton Loading Animation (Scroll-triggered / Async fallback)
+   ═══════════════════════════════════════════════════════════════════ */
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f2f2f2 25%, #e8e8e8 50%, #f2f2f2 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 8px;
+}

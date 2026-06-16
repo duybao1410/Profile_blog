@@ -35,20 +35,8 @@ export const Navbar = () => {
         {/* Menu */}
         <div className="collapse navbar-collapse" id="navbarContent">
           <ul className="navbar-nav mx-auto gap-2">
-            <li className="nav-item">
-              <NavLink
-                to="/"
-                style={({ isActive }) => ({
-                  color: isActive ? "#111111" : "#666666",
-                  fontWeight: isActive ? "600" : "400",
-                  transition: "all 0.2s ease"
-                })}
-                className="nav-link"
-              >
-                Home
-              </NavLink>
-            </li>
-
+            
+{/* 
             <li className="nav-item">
               <NavLink
                 to="/about"
@@ -62,7 +50,8 @@ export const Navbar = () => {
                 About
               </NavLink>
             </li>
-
+           
+           
             <li className="nav-item">
               <NavLink
                 to="/blog"
@@ -76,7 +65,7 @@ export const Navbar = () => {
                 Blog
               </NavLink>
             </li>
-
+*/}
           </ul>
 
           {/* Auth Buttons - Thiết kế nút tinh tế, đồng bộ Portfolio */}

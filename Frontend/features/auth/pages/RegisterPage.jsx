@@ -1,10 +1,13 @@
 import React from 'react';
+import styles from './auth.module.css';
+import { Navbar } from '../../../componets/layout/Navbar';
+import RegisterCard from '../card/Resigtercard';  
 
-export const RegisterPage = () => {
+const RegisterPage = () => {
   return (
-    <div className="register-page">
-      <h1>Register</h1>
-      {/* Register form content */}
+    <div>
+      <Navbar />
+      <RegisterCard />
     </div>
   );
 };
